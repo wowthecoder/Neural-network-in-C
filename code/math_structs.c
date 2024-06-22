@@ -151,7 +151,6 @@ void matrix_dot_vector(matrixt A, matrixt B) {
             A->contents[i][j] *= B->contents[i][0];
         }
     }
-    return A;
 }
 
 /*
@@ -248,7 +247,7 @@ void matrix_print(matrixt m){
     }
 }
 
-matrixt submatrix(int a, int b, int c, int d, matrixt m){// gets the submatrix of m at [a,b], [c,d]
+matrixt submatrix(int a, int b, int c, int d, matrixt m) {// gets the submatrix of m at [a,b], [c,d]
     matrixt res = matrix_make(b-a+1,d-c+1);
     for(int i = 0; i < res->cols; i++){
         for(int j = 0; j < res->rows; j++){

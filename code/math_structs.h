@@ -28,6 +28,7 @@ extern void matrix_dot_vector(matrixt A, matrixt B);
 extern matrixt matrix_sum_rows(matrixt B);
 extern matrixt matrix_transposeOf(matrixt B);
 extern matrixt matrix_copyOf(matrixt B);
+extern matrixt submatrix(int a, int b, int c, int d, matrixt m);
 extern void matrix_print(matrixt matrix);
 
 #endif

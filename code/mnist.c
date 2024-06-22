@@ -11,10 +11,10 @@
 #include "helper.h"
 
 // set appropriate path for data
-#define TRAIN_IMAGE "./data/train-images.idx3-ubyte"
-#define TRAIN_LABEL "./data/train-labels.idx1-ubyte"
-#define TEST_IMAGE "./data/test-images.idx3-ubyte"
-#define TEST_LABEL "./data/test-labels.idx1-ubyte"
+#define TRAIN_IMAGE "../data/train-images.idx3-ubyte"
+#define TRAIN_LABEL "../data/train-labels.idx1-ubyte"
+#define TEST_IMAGE "../data/test-images.idx3-ubyte"
+#define TEST_LABEL "../data/test-labels.idx1-ubyte"
 
 #define SIZE 784 // 28*28
 #define NUM_TRAIN 60000
@@ -50,7 +50,8 @@ int test_label[NUM_TEST];
 
 void FlipLong(unsigned char * ptr)
 {
-    register unsigned char val;
+    // register unsigned char val;
+    unsigned char val;
     
     // Swap 1st and 4th bytes
     val = *(ptr);
