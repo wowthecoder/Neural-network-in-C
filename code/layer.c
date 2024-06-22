@@ -80,8 +80,6 @@ void layer_compute_deltas(dense_layer const *layer, int epoch) {
 
     matrix_free(act_zs);
     matrix_free(nextW_T);
-
-    // adam_optimize(layer->adam, layer->deltas, epoch);
 }
 
 // layer->weights[i][j] += l_rate * layer->prev->outputs[j] * layer->deltas[i];
@@ -89,29 +87,21 @@ void layer_compute_deltas(dense_layer const *layer, int epoch) {
 // Commented parts are for adam optimizers but it doesn't work
 void layer_update(dense_layer const *layer, double l_rate, int batch_size) {
     double factor = l_rate / batch_size;
-    matrixt inputs_T = matrix_transposeOf(layer->prev->outputs);
-    matrixt lr_deltas = matrix_scalarMult(layer->deltas, factor);
-    // matrixt inv_sqrt_shat = sqrt_epsilon(layer->adam->s_hat, layer->adam->epsilon);
-    // matrixt change = matrix_make(layer->num_outputs, batch_size);
-    // matrix_elemMult(change, layer->adam->m_hat, inv_sqrt_shat);
-    // matrixt lr_changes = matrix_scalarMult(change, factor);
-    matrixt sum_deltas = matrix_sum_rows(lr_deltas);
-    // matrixt sum_changes = matrix_sum_rows(lr_changes);
-    matrixt weight_changes = matrix_make(layer->weights->rows, layer->weights->cols);
-    matrix_matMult(weight_changes, lr_deltas, inputs_T);
-    // matrix_matMult(weight_changes, lr_changes, inputs_T);
-    matrix_subtract(layer->weights, weight_changes);
-    matrix_subtract(layer->biases, sum_deltas);
-    // matrix_add(layer->biases, sum_changes);
+    // matrixt inputs_T = matrix_transposeOf(layer->prev->outputs);
+    // matrixt lr_deltas = matrix_scalarMult(layer->deltas, factor);
+    // matrixt sum_deltas = matrix_sum_rows(lr_deltas);
+    // matrixt weight_changes = matrix_make(layer->weights->rows, layer->weights->cols);
+    // matrix_matMult(weight_changes, lr_deltas, inputs_T);
+    // matrix_subtract(layer->weights, weight_changes);
+    // matrix_subtract(layer->biases, sum_deltas);
+
+    adam_optimize(layer->adam, layer->deltas, inputs_T, epoch);
+
 
     matrix_free(inputs_T);
     matrix_free(lr_deltas);
     matrix_free(weight_changes);
     matrix_free(sum_deltas);
-    // matrix_free(inv_sqrt_shat);
-    // matrix_free(change);
-    // matrix_free(lr_changes);
-    // matrix_free(sum_changes);
 }
 
 /*
