@@ -77,12 +77,12 @@ void adam_optimize(adam_optimizer adam, matrixt g, matrixt inputs, int epoch) {
     optimize(adam->m_bias, adam->mhat_bias, adam->s_bias, adam->shat_bias, deltas, NULL, epoch);
 }
 
-// Needed in equation 5: computes 1 / sqrt(s_hat + epsilon)
-matrixt sqrt_epsilon(matrixt s_hat, double epsilon) {
+// Needed in equation 5: computes m_hat / sqrt(s_hat + epsilon)
+matrixt compute_change(matrixt m_hat, matrixt s_hat, double epsilon, double l_rate) {
     matrixt res = matrix_make(s_hat->rows, s_hat->cols);
     for (int i = 0; i < res->rows; i++) {
         for (int j = 0; j < res->cols; j++) {
-            res->contents[i][j] = 1.0 / sqrt(s_hat->contents[i][j] + epsilon);
+            res->contents[i][j] = l_rate * m_hat->contents[i][j] / sqrt(s_hat->contents[i][j] + epsilon);
         }
     }
     return res;
@@ -108,10 +108,16 @@ void adam_update(adam_optimizer adam, matrixt m, bool weights, double l_rate) {
     matrix_free(sum_changes);
 }
 
+
+
 void adam_free(adam_optimizer adam) {
-    matrix_free(adam->momentum);
-    matrix_free(adam->m_hat);
-    matrix_free(adam->s);
-    matrix_free(adam->s_hat);
+    matrix_free(adam->m_weights);
+    matrix_free(adam->m_bias);
+    matrix_free(adam->mhat_weights);
+    matrix_free(adam->mhat_bias);
+    matrix_free(adam->s_weights);
+    matrix_free(adam->s_bias);
+    matrix_free(adam->shat_weights);
+    matrix_free(adam->shat_bias)
     free(adam);
 }

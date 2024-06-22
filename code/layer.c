@@ -87,7 +87,7 @@ void layer_compute_deltas(dense_layer const *layer, int epoch) {
 // Commented parts are for adam optimizers but it doesn't work
 void layer_update(dense_layer const *layer, double l_rate, int batch_size) {
     double factor = l_rate / batch_size;
-    // matrixt inputs_T = matrix_transposeOf(layer->prev->outputs);
+    matrixt inputs_T = matrix_transposeOf(layer->prev->outputs);
     // matrixt lr_deltas = matrix_scalarMult(layer->deltas, factor);
     // matrixt sum_deltas = matrix_sum_rows(lr_deltas);
     // matrixt weight_changes = matrix_make(layer->weights->rows, layer->weights->cols);
@@ -97,11 +97,16 @@ void layer_update(dense_layer const *layer, double l_rate, int batch_size) {
 
     adam_optimize(layer->adam, layer->deltas, inputs_T, epoch);
 
+    matrixt weight_changes = compute_change(adam->mhat_weights, adam->shat_weights, adam->epsilon, factor);
+    matrixt bias_changes = compute_change(adam->shat_bias, adam->shat_bias, adam->epsilon, factor);
+    matrix_subtract(layer->weights, weight_changes);
+    matrix_subtract(layer->biases, bias_changes);
 
+    // matrix_free(lr_deltas);
+    // matrix_free(sum_deltas);
     matrix_free(inputs_T);
-    matrix_free(lr_deltas);
+    matrix_free(bias_changes);
     matrix_free(weight_changes);
-    matrix_free(sum_deltas);
 }
 
 /*
