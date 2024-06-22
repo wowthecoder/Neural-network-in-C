@@ -1,0 +1,1 @@
+extern void plot_metrics(double *epochs, double *training_metrics, double *val_metrics, int num_epochs, char *title, char *ylabel, char *filename);
