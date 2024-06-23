@@ -172,6 +172,7 @@ matrixt matrix_sum_rows(matrixt B) {
  * @brief set contents of matrix to itself minus another
 */
 void matrix_subtract(matrixt A, matrixt B){
+    assert(A->rows == B->rows && A->cols == B->cols);
     for(int i = 0; i < A->rows; i++) {
         for(int j = 0; j < A->cols; j++) {
             A->contents[i][j] -= B->contents[i][j];
@@ -180,7 +181,7 @@ void matrix_subtract(matrixt A, matrixt B){
 }
 
 /*
- * @brief set contents of matrix to a scalar multiple of itself
+ * @brief returns a new matrix of the result of the scalar multiplication
 */
 matrixt matrix_scalarMult(matrixt A, double s){
     matrixt res = matrix_make(A->rows, A->cols);
@@ -193,9 +194,21 @@ matrixt matrix_scalarMult(matrixt A, double s){
 }
 
 /*
+ * @brief set contents of matrix to a scalar multiple of itself
+*/
+void matrix_scalarMult2(matrixt A, double s){
+    for(int i = 0; i < A->rows; i++) {
+        for(int j = 0; j < A->cols; j++) {
+            A->contents[i][j] *= s;
+        }
+    }
+}
+
+/*
  * @brief set contents of matrix to one multiplied by another (A = BxC)
 */
 void matrix_matMult(matrixt A, matrixt B, matrixt C){
+    assert(B->cols == C->rows);
     assert(A->rows == B->rows && A->cols == C->cols);
     for(int i = 0; i < B->rows; i++) {
         for(int j = 0; j < C->cols; j++) {

@@ -114,20 +114,14 @@ void ann_train(ann_t const *ann, matrixt inputs, matrixt targets, double l_rate,
 
     /* Backpropagation (exclude input layer) */
     for (dense_layer *curr = ann->output_layer->prev; curr != ann->input_layer; curr = curr->prev) {
-        layer_compute_deltas(curr, epoch);
+        layer_compute_deltas(curr);
     }
 
     /* Gradient descent step (update to do backwards) */
     for (dense_layer *curr = ann->input_layer->next; curr != NULL; curr = curr->next) {
-        layer_update(curr, l_rate, ann->batch_size);
+        layer_update(curr, l_rate, ann->batch_size, epoch);
     }
 
     matrix_free(act_zs);
     matrix_free(diff);
-}
-
-// train and also calculate validation loss
-// regularization techniques such as early stopping can be implemented here
-void ann_train_val(ann_t const *ann, double const *train_input, double const *train_targets, double const *val_input, double const *val_target, double l_rate) {
-    // ann_train(ann, train_input, train_targets, l_rate);
 }

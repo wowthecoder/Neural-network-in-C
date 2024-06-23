@@ -18,7 +18,6 @@ typedef struct adam_optimizer {
 typedef struct adam_optimizer *adam_optimizer;
 
 adam_optimizer adam_create(int num_neurons, int num_inputs, int batch_size, double beta1, double beta2, double epsilon);
-void adam_optimize(adam_optimizer adam, matrixt deltas, int epoch);
+void adam_optimize(adam_optimizer adam, matrixt deltas, matrixt inputs_T, int epoch);
 matrixt compute_change(matrixt m_hat, matrixt s_hat, double epsilon, double l_rate);
-void adam_update(adam_optimizer adam, matrixt m, bool weights, double l_rate);
 void adam_free(adam_optimizer adam);

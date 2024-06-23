@@ -131,11 +131,11 @@ int main() {
 
     /* Create a DNN with 2 hidden layers, each with 30 neurons. 4 layers total. */
     printf("Creating a neural network.\n");
-    printf("784 inputs, 60 hidden neurons, 60 hidden neurons and 10 output classes.\n\n");
-    int layer_outputs[] = {784, 60, 60, 10}; // number of neurons in each layer
+    printf("784 inputs, 100 hidden neurons, 100 hidden neurons and 10 output classes.\n\n");
+    int layer_outputs[] = {784, 100, 100, 10}; // number of neurons in each layer
     activation_func acts[] = {NULL, &relu, &relu, &softmax};
     activation_func act_ders[] = {NULL, &relu_der, &relu_der, &softmax_der};
-    double dropout_probs[] = {0.0, 0.4, 0.4, 0.0};
+    double dropout_probs[] = {0.0, 0.0, 0.4, 0.0};
     // passing MSE_der here because error of output layer for softmax+cross entropy loss just turns out to be MSE_der 
     ann_t *mnist_ann = ann_create(4, BATCH_SIZE, &MSE_der, acts, act_ders, dropout_probs, layer_outputs);
     if (!mnist_ann) {

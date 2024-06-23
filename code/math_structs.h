@@ -21,6 +21,7 @@ extern void matrix_setContents(matrixt matrix, double *new);
 extern void matrix_add(matrixt A, matrixt B);
 extern void matrix_subtract(matrixt A, matrixt B);
 extern matrixt matrix_scalarMult(matrixt A, double s);
+extern void matrix_scalarMult2(matrixt A, double s);
 extern void matrix_matMult(matrixt A, matrixt B, matrixt C);
 extern void matrix_add_vector(matrixt A, matrixt B);
 extern void matrix_elemMult(matrixt A, matrixt B, matrixt C);

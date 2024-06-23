@@ -33,7 +33,7 @@ bool layer_init(dense_layer *layer, int num_outputs, int batch_size, activation_
         matrix_rands(layer->weights);
         layer->biases = matrix_make(num_outputs, 1);
         layer->deltas = matrix_make(num_outputs, batch_size);
-        // layer->adam = adam_create(num_outputs, batch_size, 0.9, 0.999, pow(10, -7));
+        layer->adam = adam_create(num_outputs, num_inputs, batch_size, 0.9, 0.999, pow(10, -7));
         if (layer->biases == NULL || layer->deltas == NULL) {
             return true;
         }
@@ -51,7 +51,7 @@ void layer_free(dense_layer *layer) {
         matrix_free(layer->weights);
         matrix_free(layer->biases);
         matrix_free(layer->deltas);
-        // adam_free(layer->adam);
+        adam_free(layer->adam);
     }
     free ( layer );
 }
@@ -70,7 +70,7 @@ void layer_compute_outputs(dense_layer *layer, bool training) {
 }
 
 // layer->deltas[i] = activate_der(layer->outputs[i]) * sum_gradients;
-void layer_compute_deltas(dense_layer const *layer, int epoch) {
+void layer_compute_deltas(dense_layer const *layer) {
     matrixt act_zs = (layer->activate_der)(layer->zs);
     matrixt nextW_T = matrix_transposeOf(layer->next->weights);
     matrix_matMult(layer->deltas, nextW_T, layer->next->deltas);
@@ -85,7 +85,7 @@ void layer_compute_deltas(dense_layer const *layer, int epoch) {
 // layer->weights[i][j] += l_rate * layer->prev->outputs[j] * layer->deltas[i];
 // layer->biases[i] += l_rate * layer->deltas[i];
 // Commented parts are for adam optimizers but it doesn't work
-void layer_update(dense_layer const *layer, double l_rate, int batch_size) {
+void layer_update(dense_layer const *layer, double l_rate, int batch_size, int epoch) {
     double factor = l_rate / batch_size;
     matrixt inputs_T = matrix_transposeOf(layer->prev->outputs);
     // matrixt lr_deltas = matrix_scalarMult(layer->deltas, factor);
@@ -95,17 +95,22 @@ void layer_update(dense_layer const *layer, double l_rate, int batch_size) {
     // matrix_subtract(layer->weights, weight_changes);
     // matrix_subtract(layer->biases, sum_deltas);
 
-    adam_optimize(layer->adam, layer->deltas, inputs_T, epoch);
+    adam_optimizer adam = layer->adam;
+    adam_optimize(adam, layer->deltas, inputs_T, epoch);
 
+    // printf("mhat_weights dimensions are %d x %d, shat_weights dimensions are %d x %d\n", adam->mhat_weights->rows, adam->mhat_weights->cols, adam->shat_weights->rows, adam->shat_weights->cols);
     matrixt weight_changes = compute_change(adam->mhat_weights, adam->shat_weights, adam->epsilon, factor);
-    matrixt bias_changes = compute_change(adam->shat_bias, adam->shat_bias, adam->epsilon, factor);
-    matrix_subtract(layer->weights, weight_changes);
-    matrix_subtract(layer->biases, bias_changes);
+    // printf("mhat_bias dimensions are %d x %d, shat_bias dimensions are %d x %d\n\n", adam->mhat_bias->rows, adam->mhat_bias->cols, adam->shat_bias->rows, adam->shat_bias->cols);
+    matrixt bias_changes = compute_change(adam->mhat_bias, adam->shat_bias, adam->epsilon, factor);
+    matrixt sum_bias_changes = matrix_sum_rows(bias_changes);
+    matrix_add(layer->weights, weight_changes);
+    matrix_add(layer->biases, sum_bias_changes);
 
     // matrix_free(lr_deltas);
     // matrix_free(sum_deltas);
     matrix_free(inputs_T);
     matrix_free(bias_changes);
+    matrix_free(sum_bias_changes);
     matrix_free(weight_changes);
 }
 

@@ -30,7 +30,7 @@ typedef struct dlayer {
   /* Dropout probability p (Probability that this layer gets dropped) */
   double dropout_p;
   /* Adam Optimizer */
-  // adam_optimizer adam;
+  adam_optimizer adam;
 } dense_layer;
 
 /* Creates a single layer. */
@@ -42,6 +42,6 @@ void layer_free(dense_layer *layer);
 /* Computes the outputs of the current and all subsequent layers given inputs. */
 void layer_compute_outputs(dense_layer *layer, bool training);
 /* Computes the delta errors for this layer and all previous layers (backpropagate). */
-void layer_compute_deltas(dense_layer const *layer, int epoch);
+void layer_compute_deltas(dense_layer const *layer);
 /* Updates weights and biases according to the delta errors given learning rate. */
-void layer_update(dense_layer const *layer, double l_rate, int batch_size);
+void layer_update(dense_layer const *layer, double l_rate, int batch_size, int epoch);
