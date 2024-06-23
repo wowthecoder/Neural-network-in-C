@@ -1,4 +1,5 @@
 # Neural-network-in-C
+This is my extension for the C group project in Imperial College First year Computing.
 ## 📁  File structure
 ```
 ├── README.md                           // Readme
@@ -46,11 +47,41 @@
     └── xor.png                         // Loss graph (MSE) for XOR network (1 hidden layer, 2 neurons)
 ```
 ## 🔢 Math and Logic
-
+Only the Deep Neural Network (with Fully Connected Layers) is tested with MNIST. Convolutional network is partially complete.
+### Network architecture
+### Backpropagation
+### Mini-batch Gradient Descent
+### Dropout 
+### Adam Optimizer
+### Training and Graph plotting
+First load the byte input files of the MNIST images, then split them into batches of 16. Then trains the network for 20 epochs. \
+Finally plots the graph using `gnuplot`.
 ## 🔨 Build and Run
+Prerequisites:
+- Linux / WSL (does not work on Windows 🤷)
+- gnuplot (install via `sudo apt install gnuplot` in command line) \
+If you encounter 404 Not Found errors while installing `gnuplot`, run `sudo apt-get update` then `sudo apt install gnuplot --fix-missing`. \
+Once you have the prerequisites, type `cd code` followed by `make mnist` to generate the object files and `mnist` executable. Then run the program by typing `./mnist`. \
+The output images will be produced in the `code` directory.
 
 ## 📊 Results
+The validation set is not included in training and is a true reflection of how well the model is doing. \
+Here's the results of some different network architectures that I tried:
+1. 2 hidden layers (100+100), only final hidden layer dropout 0.4, Adam optimizer (BEST) \
+Best network, highest validation accuracy is 97.40%.
+2. 2 hidden layers (30+30), no dropout, mini-batch GD (INITIAL) \
+Surprisingly the 2nd best network, the best amongst the mini-batch GD networks. Reached highest validation accuracy of 95.59%
+3. 2 hidden layers (60+60), both dropout 0.4, mini-batch GD \
+Highest validation accuracy 95.10%
+5. 2 hidden layers (100+100), both dropout 0.4, mini-batch GD \
+Surprisingly worse than 60+60, validation accuracy was only about 94+% \
+<br>
+From the graphs of 3 and 4, the validation accuracy/loss is consistently better than the training accuracy/loss, which indicates underfitting.
 
-## 🚀 Future Improvements
+## 🌟 Credit/Acknowledgment
+Credits to my group members Jeffrey Chang and Sam Shariatmadari for writing the code for the convolutional layers.
+
+## 🚀 Future Improvements 
  - Put more neurons in the hidden layers. I did not do that because my potato machine will probably explode.
  - Try to use GPU for matrix operations as it provides a significant speedup.
+ - (Specific for image classification) Perform some data augmentation to generate more training examples, such as rotating and resizing the images.
