@@ -49,9 +49,30 @@ This is my extension for the C group project in Imperial College First year Comp
 ## 🔢 Math and Logic
 Only the Deep Neural Network (with Fully Connected Layers) is tested with MNIST. Convolutional network is partially complete.
 ### Network architecture
+**4 Layers, batch size 16**:
+1. Input layer: 784 outputs (28 x 28 px input image) 
+2. Hidden layer: 60 neurons, RELU activation, dropout probability 0.2
+3. Hidden layer: 60 neurons, RELU activation, dropout probability 0.2
+4. Output layer: 10 neurons (to represent 10 classes), softmax activation
+
+Number of training examples: 60000 (3750 batches) \
+Number of validation examples: 10000 (625 batches) 
+
 ### Backpropagation
+I started by implementing Stochastic Gradient Descent - update for every sample
+![image](https://github.com/wowthecoder/Neural-network-in-C/assets/82577844/264817b5-7a52-43c3-bd91-b43eefb95ff0)
+
 ### Mini-batch Gradient Descent
+The idea is that instead of beginning with a single input vector, $x$, we can begin with a matrix $X=[𝑥_1 𝑥_2 … 𝑥_𝑚]$ whose columns are the vectors in the mini-batch. We forward-propagate by multiplying by the weight matrices, adding a suitable matrix for the bias terms.
+
+Setup: Change the dimensions of the delta matrix from (num_neurons x 1) to (num_neurons * batch_size) \[later denote as n x b], and calculate the deltas for each sample in a batch. \
+Change the learning rate $\eta$ to $\eta / b$. \
+<img src="https://github.com/wowthecoder/Neural-network-in-C/assets/82577844/6d0dcc51-b58e-4aa6-b69e-75f14c444cde" width="500">
+<img src="https://github.com/wowthecoder/Neural-network-in-C/assets/82577844/f7b0eefd-23ff-4730-a92f-ce79cd4e66a6" width="350">
+
+Does not actually provide a significant speedup because our matrix library is not optimised like NumPy. Fun to implement nonetheless.
 ### Dropout 
+
 ### Adam Optimizer
 ### Training and Graph plotting
 First load the byte input files of the MNIST images, then split them into batches of 16. Then trains the network for 20 epochs. \
