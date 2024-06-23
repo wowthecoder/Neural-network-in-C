@@ -75,8 +75,10 @@ Does not actually provide a significant speedup because our matrix library is no
 Dropout is a regularisation technique to reduce overfitting. It simply means that during training, we randomly omit some of the neurons in the layers with probability $p$, effectively only training a sub-network.
 This forces the neurons to be more "independent" and not be reliant on certain inputs. The resulting network is essentially an ensemble of all the trained sub-networks, which generalises better to new data. \
 <br>
-Used a technique called inverted dropout to avoid modifying the outputs during testing phase.
+Used a technique called inverted dropout to avoid modifying the outputs during testing phase. Here $q = 1 - p$
 ![image](https://github.com/wowthecoder/Neural-network-in-C/assets/82577844/9c1634cf-7115-4b99-9b17-3179bf5e2640)
+![image](https://github.com/wowthecoder/Neural-network-in-C/assets/82577844/595539ec-4ce5-4a0d-8c18-896652ce37e7)
+
 
 NOTE: When computing the delta matrices in backpropagation, the deltas are multiplied by the dropout mask to filter out the neurons that are dropped.
 
