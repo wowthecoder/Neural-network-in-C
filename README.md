@@ -51,8 +51,8 @@ Only the Deep Neural Network (with Fully Connected Layers) is tested with MNIST.
 ### Network architecture
 **4 Layers, batch size 16**:
 1. Input layer: 784 outputs (28 x 28 px input image) 
-2. Hidden layer: 60 neurons, RELU activation, dropout probability 0.2
-3. Hidden layer: 60 neurons, RELU activation, dropout probability 0.2
+2. Hidden layer: 100 neurons, RELU activation
+3. Hidden layer: 100 neurons, RELU activation, dropout probability 0.4
 4. Output layer: 10 neurons (to represent 10 classes), softmax activation
 
 Number of training examples: 60000 (3750 batches) \
