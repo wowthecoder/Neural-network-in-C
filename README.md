@@ -67,13 +67,23 @@ The idea is that instead of beginning with a single input vector, $x$, we can be
 
 Setup: Change the dimensions of the delta matrix from (num_neurons x 1) to (num_neurons * batch_size) \[later denote as n x b], and calculate the deltas for each sample in a batch. \
 Change the learning rate $\eta$ to $\eta / b$. \
-<img src="https://github.com/wowthecoder/Neural-network-in-C/assets/82577844/6d0dcc51-b58e-4aa6-b69e-75f14c444cde" width="500">
-<img src="https://github.com/wowthecoder/Neural-network-in-C/assets/82577844/f7b0eefd-23ff-4730-a92f-ce79cd4e66a6" width="350">
+<img src="https://github.com/wowthecoder/Neural-network-in-C/assets/82577844/6d0dcc51-b58e-4aa6-b69e-75f14c444cde" width="550">
+<img src="https://github.com/wowthecoder/Neural-network-in-C/assets/82577844/f7b0eefd-23ff-4730-a92f-ce79cd4e66a6" width="400">
 
 Does not actually provide a significant speedup because our matrix library is not optimised like NumPy. Fun to implement nonetheless.
 ### Dropout 
+Dropout is a regularisation technique to reduce overfitting. It simply means that during training, we randomly omit some of the neurons in the layers with probability $p$, effectively only training a sub-network.
+This forces the neurons to be more "independent" and not be reliant on certain inputs. The resulting network is essentially an ensemble of all the trained sub-networks, which generalises better to new data. \
+<br>
+Used a technique called inverted dropout to avoid modifying the outputs during testing phase.
+![image](https://github.com/wowthecoder/Neural-network-in-C/assets/82577844/9c1634cf-7115-4b99-9b17-3179bf5e2640)
+
+NOTE: When computing the delta matrices in backpropagation, the deltas are multiplied by the dropout mask to filter out the neurons that are dropped.
 
 ### Adam Optimizer
+This was the missing piece that boosted the accuracy by a lot. Adam optimizer has a higher convergence speed than SGD, hence more optimal weights and biases are found. 
+![image](https://github.com/wowthecoder/Neural-network-in-C/assets/82577844/0e62003b-4c5a-46ca-93d2-198df3c59437)
+
 ### Training and Graph plotting
 First load the byte input files of the MNIST images, then split them into batches of 16. Then trains the network for 20 epochs. \
 Finally plots the graph using `gnuplot`.
