@@ -112,7 +112,7 @@ Surprisingly worse than 60+60, validation accuracy was only about 94+% \
 From the graphs of 3 and 4, the validation accuracy/loss is consistently better than the training accuracy/loss, which indicates underfitting.
 
 ## 🌟 Credit/Acknowledgment
-Credits to my group members Jeffrey Chang and Sam Shariatmadari for writing the code for the convolutional layers.
+Credits to my group members [Jeffrey Chang](https://www.github.com/cst0313) and Sam Shariatmadari for writing the code for the convolutional layers.
 
 ## 🚀 Future Improvements 
  - Put more neurons in the hidden layers. I did not do that because my potato machine will probably explode.
